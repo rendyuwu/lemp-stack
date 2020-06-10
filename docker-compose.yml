@@ -1,32 +1,30 @@
-version: '2.3'
+version: '3.8'
 services:
   nginx:
-    image: nginx
+    image: nginx:latest
     container_name: nginx
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/conf/:/etc/nginx/:ro
+      - ./nginx/conf/:/etc/nginx/conf.d/
       - ./nginx/site/:/usr/share/nginx/html/
       - ./nginx/log/:/var/log/nginx/
     depends_on:
-      - php7
+      - php
     networks:
-      - lemp-network
+      - lemp-network-test
       
-  php7:
-    image: blacksourcez/php7-fpm
-    container_name: php7
+  php:
+    image: rendyuwu/php:7.4-fpm
+    container_name: php
     expose: 
       - "9000"
     volumes:
-      - ./phpfpm/conf/fpm/php.ini:/etc/php/7.0/fpm/php.ini
-      - ./phpfpm/conf/fpm/php-fpm.conf:/etc/php/7.0/fpm/php-fpm.conf
-      - ./phpfpm/conf/cli/php.ini:/etc/php/7.0/cli/php.ini
-      - ./nginx/site/:/usr/share/nginx/html
+      - ./php/:/usr/local/etc/php/
+      - ./nginx/site/:/usr/share/nginx/html/
     networks:
-      - lemp-network
+      - lemp-network-test
 
   mariadb:
     image: mariadb:latest
@@ -34,15 +32,15 @@ services:
     ports:
       - "3306:3306"
     volumes: 
-      - ./mysql/conf/:/etc/mysql/conf.d
-      - ./mysql/log/:/var/log/mysql
+      - ./mariadb/conf/:/etc/mysql/conf.d/
+      - ./mariadb/log/:/var/log/mysql/
     environment: 
       MYSQL_ROOT_PASSWORD: root
     networks:
-      - lemp-network
+      - lemp-network-test
 
 networks:
-  lemp-network:
+  lemp-network-test:
     driver: bridge
     ipam:
       driver: default

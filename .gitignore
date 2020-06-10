@@ -1,0 +1,5 @@
+nginx/conf/*
+nginx/site/*
+!nginx/conf/default.conf
+!nginx/site/index.html
+!nginx/site/50x.html
