@@ -22,6 +22,7 @@ services:
       - "9000"
     volumes:
       - ./php/:/usr/local/etc/php/
+      - ./php/www.conf:/usr/local/etc/php-fpm.d/www.conf
       - ./nginx/site/:/usr/share/nginx/html/
     networks:
       - lemp-network-test
